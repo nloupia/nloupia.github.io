@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure domestique (NAS) — Nicolas Loupia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="brand">~/nloupia</span>
+    <nav class="topnav">
+      <a href="../index.html#projets">← retour aux projets</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section wrap" style="border-top:none; padding-top:48px;">
+    <div class="section-head">
+      <span class="eyebrow">// projet</span>
+      <h2>Infrastructure domestique (NAS / homelab)</h2>
+      <p class="section-desc">Linux · Docker · réseau · stockage — en production depuis 2023</p>
+    </div>
+
+    <div class="log-entry" style="margin-bottom: 24px;">
+      <h3>Contexte</h3>
+      <p class="log-desc" style="margin-bottom:0;">
+        Reprise et reconstruction d'un serveur NAS hérité, sous OpenMediaVault (Debian). L'objectif :
+        un système de stockage fiable, une stack applicative de gestion de médias entièrement
+        conteneurisée, et un accès distant sécurisé — administré en autonomie complète, sans formation
+        préalable, par lecture de documentation et résolution de problèmes réels.
+      </p>
+    </div>
+
+    <div class="log-entry" style="margin-bottom: 24px;">
+      <h3>Stockage &amp; système</h3>
+      <p class="log-desc">
+        Organisation de plusieurs disques en RAID, répartition des volumes par fonction (films, séries,
+        musique, système), réorganisation et relabeling après plusieurs itérations pour fiabiliser
+        la structure. Surveillance de l'état des disques (données SMART) suite à des incidents.
+      </p>
+      <ul class="log-tags">
+        <li>OpenMediaVault</li><li>Debian</li><li>RAID</li><li>SMART</li>
+      </ul>
+    </div>
+
+    <div class="log-entry" style="margin-bottom: 24px;">
+      <h3>Conteneurisation</h3>
+      <p class="log-desc">
+        Déploiement et maintenance d'une stack Docker d'une dizaine de services interconnectés
+        (gestion de médias, indexation, téléchargement, supervision), avec gestion des volumes,
+        des variables d'environnement, et des dépendances entre conteneurs via Docker Compose.
+        Diagnostic de conflits de ressources entre services lors d'incidents de charge CPU.
+      </p>
+      <ul class="log-tags">
+        <li>Docker</li><li>Docker Compose</li><li>Gestion de volumes</li>
+      </ul>
+    </div>
+
+    <div class="log-entry" style="margin-bottom: 24px;">
+      <h3>Réseau &amp; accès distant</h3>
+      <p class="log-desc">
+        Mise en place d'un reverse proxy pour exposer plusieurs services sous des noms de domaine
+        distincts, configuration DNS dynamique, tunnel VPN pour les flux nécessitant un anonymat
+        réseau, ouverture et sécurisation sélective de ports.
+      </p>
+      <ul class="log-tags">
+        <li>Reverse proxy</li><li>DNS dynamique</li><li>VPN</li><li>Pare-feu</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <h3>Ce que ce projet a appris</h3>
+      <p class="log-desc" style="margin-bottom:0;">
+        La différence entre suivre une procédure et comprendre pourquoi elle fonctionne. Une bonne
+        partie du travail initial consistait à appliquer des configurations trouvées en ligne sans
+        toujours en maîtriser chaque rouage — une limite identifiée consciemment, et le moteur direct
+        du projet de formation actuel : structurer cette pratique par une base théorique solide
+        (réseau, systèmes Windows Server, sécurité) plutôt que de rester sur de l'empirisme.
+      </p>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <p><a href="../index.html">← retour à l'accueil</a></p>
+</footer>
+
+</body>
+</html>
