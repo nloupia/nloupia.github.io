@@ -7,7 +7,237 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0D1117;
+    --surface:  #161B22;
+    --border:   #30363D;
+    --green:    #4ADE80;
+    --green-dim:#22543D;
+    --text:     #C9D1D9;
+    --muted:    #8B949E;
+    --mono:     'JetBrains Mono', monospace;
+    --sans:     'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--green);
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  /* Topbar */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand { font-family: var(--mono); font-size: 13px; color: var(--green); }
+  .topnav a { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .topnav a:hover { color: var(--green); text-decoration: none; }
+
+  /* Page header */
+  .page-header {
+    padding: 48px 0 36px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin: 8px 0 10px;
+    line-height: 1.25;
+  }
+  .page-header .subtitle {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Badges de statut globaux */
+  .badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .badge-prod   { color: var(--green); border-color: var(--green); background: rgba(74,222,128,.07); }
+  .badge-diag   { color: #F59E0B;      border-color: #F59E0B;      background: rgba(245,158,11,.07); }
+  .badge-green  { color: #34D399;      border-color: #34D399;      background: rgba(52,211,153,.07); }
+
+  /* Section générique */
+  .section { padding: 36px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* Bloc GreenIT — encart mis en valeur */
+  .greenblock {
+    background: linear-gradient(135deg, rgba(52,211,153,.06) 0%, rgba(74,222,128,.03) 100%);
+    border: 1px solid rgba(74,222,128,.25);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 36px 0;
+  }
+  .greenblock-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .greenblock-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #34D399;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .greenblock-cmd {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    background: rgba(0,0,0,.3);
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .greenblock p {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+  .greenblock p:last-child { margin-bottom: 0; }
+  .greenblock em {
+    font-style: normal;
+    color: #34D399;
+    font-weight: 500;
+  }
+
+  /* Entrées de log (chapitres) */
+  .log-entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .log-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .log-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid;
+    letter-spacing: .05em;
+  }
+  .status-prod { color: var(--green); border-color: var(--green); background: rgba(74,222,128,.08); }
+  .status-diag { color: #F59E0B;      border-color: #F59E0B;      background: rgba(245,158,11,.08); }
+  .log-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .log-entry h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .log-entry p { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .log-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin-top: 12px;
+  }
+  .log-tags li {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+
+  /* Bloc stack */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .stack-item {
+    background: rgba(0,0,0,.25);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .stack-item .svc { color: var(--green); display: block; }
+  .stack-item .port { color: var(--muted); font-size: 11px; }
+
+  /* Footer */
+  footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  footer p { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--green); text-decoration: none; }
+</style>
 </head>
 <body>
 
@@ -21,127 +251,163 @@
 </header>
 
 <main>
-  <section class="section wrap" style="border-top:none; padding-top:48px;">
-    <div class="section-head">
+  <div class="wrap">
+
+    <!-- En-tête de page -->
+    <div class="page-header">
       <span class="eyebrow">// projet — journal chronologique</span>
-      <h2>Infrastructure domestique (NAS / homelab)</h2>
-      <p class="section-desc">OpenMediaVault · Docker · réseau · accès distant — repris et restructuré en 2024</p>
+      <h1>Infrastructure domestique (NAS / homelab)</h1>
+      <p class="subtitle">OpenMediaVault · Docker · réseau · accès distant — repris et restructuré en 2024</p>
+      <div class="badges">
+        <span class="badge badge-prod">en production</span>
+        <span class="badge badge-diag">crash — diagnostic incomplet</span>
+        <span class="badge badge-green">sobriété numérique</span>
+      </div>
     </div>
 
-    <div class="log-entry" style="margin-bottom: 24px;">
-      <div class="log-meta">
-        <span class="log-status status-prod">point de départ</span>
-        <span class="log-date">avril 2024</span>
+    <!-- ═══════════════════════════════════════════
+         BLOC GREENÍT — philosophie du projet
+    ════════════════════════════════════════════ -->
+    <div class="greenblock">
+      <div class="greenblock-header">
+        <span class="greenblock-label">// philosophie</span>
+        <span class="greenblock-cmd">extend &gt; replace</span>
       </div>
-      <h3>Récupération du NAS familial</h3>
-      <p class="log-desc">
-        J'ai récupéré le NAS familial — un serveur que mon père et moi avions configuré ensemble quelques
-        années auparavant sous OpenMediaVault (Debian). En le récupérant, les disques étaient
-        désorganisés et l'écosystème en place (Plex) n'était plus adapté à nos usages. Point de départ :
-        remettre de l'ordre, puis repenser l'ensemble.
+      <p>
+        Ce projet repose sur un postulat simple : avant d'acheter, récupérer.
+        Le serveur est un <em>i5-3570 de 2012</em> — hérité, pas acheté.
+        L'architecture Docker a été choisie pour maximiser l'usage de ressources existantes
+        plutôt que de multiplier les machines physiques.
+        Le crash de juin 2026 non résolu illustre cette même logique : <em>comprendre avant de remplacer</em>.
       </p>
-      <ul class="log-tags">
-        <li>OpenMediaVault</li><li>Debian</li><li>Réorganisation disques</li><li>RAID</li>
-      </ul>
-    </div>
-
-    <div class="log-entry" style="margin-bottom: 24px;">
-      <div class="log-meta">
-        <span class="log-status status-prod">étape 1</span>
-        <span class="log-date">avril — mai 2024</span>
-      </div>
-      <h3>Choix d'un nouvel écosystème — migration vers Jellyfin</h3>
-      <p class="log-desc">
-        Plex était payant et fermé. En cherchant une alternative open source, j'ai découvert Jellyfin
-        et décidé de l'adopter. C'est cette décision qui m'a poussé à apprendre Docker : Jellyfin
-        se déploie en conteneur, ce qui m'a obligé à comprendre les volumes, les ports, les variables
-        d'environnement, et les dépendances entre services. Progressivement, j'ai ajouté d'autres
-        conteneurs autour — gestion automatisée des médias, indexation, téléchargements — jusqu'à
-        obtenir une stack d'une dizaine de services interconnectés via Docker Compose.
-      </p>
-      <ul class="log-tags">
-        <li>Jellyfin</li><li>Docker</li><li>Docker Compose</li><li>Stack média</li>
-      </ul>
-    </div>
-
-    <div class="log-entry" style="margin-bottom: 24px;">
-      <div class="log-meta">
-        <span class="log-status status-prod">étape 2</span>
-        <span class="log-date">mai — juin 2024</span>
-      </div>
-      <h3>Accès distant sécurisé — DuckDNS &amp; Nginx Proxy Manager</h3>
-      <p class="log-desc">
-        Une fois la stack en place localement, j'ai voulu la rendre accessible depuis l'extérieur
-        du réseau. Première contrainte : mon IP domestique change régulièrement — j'ai résolu ça avec
-        DuckDNS, qui maintient un nom de domaine stable pointant toujours vers ma vraie adresse.
-        Deuxième contrainte : on ne peut pas exposer un serveur directement sur Internet sans
-        intermédiaire. J'ai mis en place Nginx Proxy Manager comme reverse proxy, qui centralise
-        les accès, redirige les requêtes vers le bon conteneur selon le domaine demandé, et gère
-        les certificats HTTPS automatiquement. J'ai aussi créé et configuré les comptes utilisateurs
-        pour contrôler qui peut accéder à quoi depuis l'extérieur.
-      </p>
-      <ul class="log-tags">
-        <li>DuckDNS</li><li>Nginx Proxy Manager</li><li>HTTPS</li><li>Reverse proxy</li><li>Gestion utilisateurs</li>
-      </ul>
-    </div>
-
-    <div class="log-entry" style="margin-bottom: 24px;">
-      <div class="log-meta">
-        <span class="log-status status-prod">étape 3</span>
-        <span class="log-date">juin 2024</span>
-      </div>
-      <h3>Déploiement de RoonServer — et premières limites de la machine</h3>
-      <p class="log-desc">
-        En parallèle de la stack média, j'ai déployé RoonServer — un écosystème de lecture audio
-        assez lourd en ressources — sur la même machine. Cette décision a commencé à créer des
-        problèmes de performance : pics d'utilisation CPU et d'attente I/O, premiers crashs système.
-        C'est à ce stade que j'ai commencé à me confronter à quelque chose que je ne savais pas encore
-        faire : diagnostiquer un système en production à partir de ses journaux.
-      </p>
-      <ul class="log-tags">
-        <li>RoonServer</li><li>Performance</li><li>Ressources système</li>
-      </ul>
-    </div>
-
-    <div class="log-entry" style="margin-bottom: 24px;">
-      <div class="log-meta">
-        <span class="log-status status-open">en cours</span>
-        <span class="log-date">2024 — aujourd'hui</span>
-      </div>
-      <h3>Crashs récurrents — apprentissage du diagnostic système</h3>
-      <p class="log-desc">
-        Les crashs persistent. J'ai commencé à apprendre à lire les journaux système (journalctl,
-        données SMART des disques) pour comprendre ce qui se passe. J'ai identifié des pics sévères
-        d'attente I/O précédant les reboots noyau, mais je n'ai pas encore isolé la cause racine
-        avec suffisamment de rigueur. Je sais collecter les informations — je ne sais pas encore
-        les analyser jusqu'au bout.
-      </p>
-      <ul class="log-tags">
-        <li>journalctl</li><li>SMART</li><li>Diagnostic</li><li>I/O wait</li>
-      </ul>
-    </div>
-
-    <div class="log-entry">
-      <div class="log-meta">
-        <span class="log-status status-planned">conclusion</span>
-      </div>
-      <h3>Ce que ce projet m'a réellement appris</h3>
-      <p class="log-desc" style="margin-bottom:0;">
-        Chaque étape de ce projet a été motivée par un besoin concret, pas par une liste de choses
-        à apprendre. Docker parce que Jellyfin le nécessitait. Le reverse proxy parce qu'on ne peut
-        pas exposer un serveur nu sur Internet. Les logs parce que la machine crashait. C'est cette
-        logique de problème → solution → compréhension qui m'a donné envie de formaliser cette
-        pratique par une vraie formation. L'écart entre ce que je sais faire et ce que je comprends
-        réellement — illustré par les crashs non encore résolus — est précisément ce que le Bachelor
-        Administrateur Systèmes et Réseaux doit combler.
+      <p>
+        C'est ce qu'on appelle la sobriété numérique. Je ne savais pas encore que ça avait un nom.
       </p>
     </div>
 
-  </section>
+    <!-- ═══════════════════════════════════════════
+         CHAPITRE 1 — Récupération
+    ════════════════════════════════════════════ -->
+    <div class="section">
+      <p class="section-title">// arc chronologique</p>
+
+      <div class="log-entry">
+        <div class="log-meta">
+          <span class="log-status status-prod">point de départ</span>
+          <span class="log-date">avril 2024</span>
+        </div>
+        <h3>Récupération du NAS familial</h3>
+        <p>
+          J'ai récupéré le NAS que mon père et moi avions configuré ensemble quelques années plus tôt
+          sous OpenMediaVault. Les disques étaient désorganisés, l'écosystème en place (Plex) n'était
+          plus adapté à nos usages. Point de départ : remettre de l'ordre, puis repenser l'ensemble.
+          Matériel : i5-3570, 16 Go RAM — 14 ans d'âge au moment de la reprise.
+        </p>
+        <ul class="log-tags">
+          <li>OpenMediaVault</li><li>Debian</li><li>Réorganisation disques</li><li>i5-3570 (2012)</li>
+        </ul>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           CHAPITRE 2 — Migration Jellyfin
+      ════════════════════════════════════════════ -->
+      <div class="log-entry">
+        <div class="log-meta">
+          <span class="log-status status-prod">étape 1</span>
+          <span class="log-date">avril — mai 2024</span>
+        </div>
+        <h3>Migration vers Jellyfin — construction de la stack arr</h3>
+        <p>
+          Plex était payant, fermé, et ses serveurs traitent des données de visionnage. Jellyfin est
+          libre, auto-hébergé, sans télémétrie. Choix délibéré. La migration a impliqué de déployer
+          l'ensemble de la stack via Docker Compose : Jellyfin pour la lecture, Radarr/Sonarr pour
+          la gestion des médias, Prowlarr pour les indexeurs, Transmission avec VPN, Jellyseerr pour
+          les requêtes, Jellystat pour les statistiques.
+        </p>
+        <div class="stack-grid">
+          <div class="stack-item"><span class="svc">Jellyfin</span><span class="port">:8096</span></div>
+          <div class="stack-item"><span class="svc">Radarr</span><span class="port">:7878</span></div>
+          <div class="stack-item"><span class="svc">Sonarr</span><span class="port">:8989</span></div>
+          <div class="stack-item"><span class="svc">Prowlarr</span><span class="port">:9696</span></div>
+          <div class="stack-item"><span class="svc">Transmission + PIA</span><span class="port">:9091</span></div>
+          <div class="stack-item"><span class="svc">Jellyseerr</span><span class="port">:5055</span></div>
+          <div class="stack-item"><span class="svc">Jellystat</span><span class="port">:3000</span></div>
+          <div class="stack-item"><span class="svc">Homepage</span><span class="port">:3500</span></div>
+        </div>
+        <ul class="log-tags" style="margin-top:14px;">
+          <li>Docker Compose</li><li>Jellyfin</li><li>arr stack</li><li>VPN PIA</li>
+        </ul>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           CHAPITRE 3 — Accès distant
+      ════════════════════════════════════════════ -->
+      <div class="log-entry">
+        <div class="log-meta">
+          <span class="log-status status-prod">étape 2</span>
+          <span class="log-date">mai — juin 2024</span>
+        </div>
+        <h3>Accès distant sécurisé — DuckDNS + Nginx + HTTPS</h3>
+        <p>
+          Objectif : rendre Jellyfin accessible depuis l'extérieur sans exposer directement l'IP.
+          Mise en place de DuckDNS pour le DNS dynamique, Nginx Proxy Manager comme reverse proxy,
+          certificats Let's Encrypt pour le HTTPS. Création et gestion des comptes utilisateurs
+          pour contrôler les accès depuis l'extérieur.
+        </p>
+        <ul class="log-tags">
+          <li>DuckDNS</li><li>Nginx Proxy Manager</li><li>Let's Encrypt</li><li>Reverse proxy</li><li>Gestion utilisateurs</li>
+        </ul>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           CHAPITRE 4 — RoonServer + crash
+      ════════════════════════════════════════════ -->
+      <div class="log-entry">
+        <div class="log-meta">
+          <span class="log-status status-diag">incident actif</span>
+          <span class="log-date">depuis juin 2026</span>
+        </div>
+        <h3>Déploiement de RoonServer — et premier crash sérieux</h3>
+        <p>
+          RoonServer (écosystème audio lourd, ~3 To de bibliothèque FLAC) a été migré vers Docker
+          pour centraliser l'infrastructure. En juin 2026, le NAS a redémarré de façon inattendue.
+          Les journaux système font apparaître un reboot noyau avec des problèmes de montage sur
+          plusieurs volumes et un pic sévère d'I/O wait (<code>97.5%</code>) juste avant l'incident.
+          Loadavg post-reboot à <code>19.9</code>. UUID timeout sur le disque de backup USB.
+        </p>
+        <p style="margin-top:10px;">
+          Démarche en cours : analyse de <code>journalctl -b -1</code>, données SMART des disques,
+          mise en place de Monit avec seuils sur I/O wait et loadavg. La cause racine — freeze
+          hardware, perte de courant, ou panique disque — n'est pas encore établie.
+        </p>
+        <ul class="log-tags">
+          <li>RoonServer</li><li>journalctl</li><li>SMART</li><li>Monit</li><li>I/O wait</li><li>Diagnostic en cours</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         POURQUOI DOCUMENTER UN INCIDENT NON RÉSOLU
+    ════════════════════════════════════════════ -->
+    <div class="section">
+      <p class="section-title">// pourquoi documenter un incident non résolu</p>
+      <p style="font-size:14px; color:var(--text); line-height:1.8;">
+        Un vrai travail d'administration système ne se limite pas aux succès propres. Documenter
+        la méthode de diagnostic — même quand la cause racine n'est pas encore établie —
+        illustre une compétence recherchée chez un admin sys/réseau junior : savoir structurer
+        une investigation (logs, métriques matérielles, corrélation temporelle) plutôt que de
+        procéder par tâtonnement. C'est précisément cet écart entre la pratique acquise et la
+        méthode qui manque qui m'a convaincu de suivre une formation structurée.
+      </p>
+    </div>
+
+  </div><!-- /.wrap -->
 </main>
 
-<footer class="footer wrap">
-  <p><a href="../index.html">← retour à l'accueil</a></p>
+<footer>
+  <div class="wrap">
+    <p><a href="../index.html">← retour à l'accueil</a></p>
+  </div>
 </footer>
 
 </body>
